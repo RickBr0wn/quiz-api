@@ -1,0 +1,20 @@
+### TEST FAILED METHOD ###
+GET http://127.0.0.1:3000/api/questions/add-question HTTP/1.1
+content-type: application/json
+
+{
+    "question": "What is the capital of Denmark?",
+		"answer": "Copenhagen",
+		"incorrect_answers": ["Aarhus", "Odense", "Aalborg"]
+}
+###
+
+### TEST SUCCESSFUL POST ###
+POST http://127.0.0.1:3000/api/questions/add-question HTTP/1.1
+content-type: application/json
+
+{
+    "question": "What is the capital of Denmark?",
+		"answer": "Copenhagen",
+		"incorrect_answers": ["Aarhus", "Odense", "Aalborg"]
+}
