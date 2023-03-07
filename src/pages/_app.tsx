@@ -1,13 +1,22 @@
-import type { AppProps } from 'next/app'
+import { SessionProvider } from 'next-auth/react'
+import type { AppType } from 'next/app'
 import { ChakraProvider } from '@chakra-ui/react'
 import Layout from '~/components/layout'
+import { Session } from 'next-auth'
 
-export default function App({ Component, pageProps }: AppProps) {
+const App: AppType<{ session: Session | null }> = ({
+	Component,
+	pageProps: { session, ...pageProps }
+}) => {
 	return (
-		<ChakraProvider>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
-		</ChakraProvider>
+		<SessionProvider session={session}>
+			<ChakraProvider>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</ChakraProvider>
+		</SessionProvider>
 	)
 }
+
+export default App
