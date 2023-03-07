@@ -1,3 +1,4 @@
+import { Container } from '@chakra-ui/react'
 import Head from 'next/head'
 import type { FC, ReactNode } from 'react'
 
@@ -15,11 +16,11 @@ const Layout: FC<Props> = ({ children }): JSX.Element => {
 				<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
 				<link rel='manifest' href='/site.webmanifest' />
 			</Head>
-			<>
-				<nav>nav</nav>
+			<Container>
+				{/* <nav>nav</nav> */}
 				<main>{children}</main>
-				<footer>footer</footer>
-			</>
+				{/* <footer>footer</footer> */}
+			</Container>
 		</>
 	)
 }

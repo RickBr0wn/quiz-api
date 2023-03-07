@@ -1,7 +1,10 @@
+import { Flex, Heading, Text } from '@chakra-ui/react'
+
 export default function Home() {
 	return (
-		<>
-			<h1>home</h1>
-		</>
+		<Flex h='100vh' justify='center' flexDir='column'>
+			<Heading>under construction</Heading>
+			<Text>rickbrown.co.uk</Text>
+		</Flex>
 	)
 }
