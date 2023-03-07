@@ -12,7 +12,7 @@ type HomeProps = {
 	questions: Question[]
 }
 
-export default function Home({ questions }: HomeProps) {
+export default function Home({ questions }: HomeProps): JSX.Element {
 	const { data: session } = useSession()
 	const [questionState, setQuestionState] = useState(questions)
 
