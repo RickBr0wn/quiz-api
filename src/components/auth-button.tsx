@@ -10,14 +10,21 @@ const AuthButton: FC<Props> = (): JSX.Element => {
 	if (session && session.user) {
 		return (
 			<>
-				<Button onClick={() => signOut()}>Sign out</Button>
+				<Button onClick={() => signOut({ callbackUrl: `/` })}>Sign out</Button>
 			</>
 		)
 	}
 	return (
 		<>
-
-			<Button onClick={() => signIn()}>Sign in</Button>
+			<Button
+				onClick={() =>
+					signIn(undefined, {
+						callbackUrl: `/dashboard`
+					})
+				}
+			>
+				Sign in
+			</Button>
 		</>
 	)
 }

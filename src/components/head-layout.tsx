@@ -1,10 +1,9 @@
-import { Container } from '@chakra-ui/react'
 import Head from 'next/head'
 import type { FC, ReactNode } from 'react'
 
-type Props = { children: ReactNode }
+type HeadLayoutProps = { children: ReactNode }
 
-const Layout: FC<Props> = ({ children }): JSX.Element => {
+const HeadLayout: FC<HeadLayoutProps> = ({ children }): JSX.Element => {
 	return (
 		<>
 			<Head>
@@ -16,18 +15,14 @@ const Layout: FC<Props> = ({ children }): JSX.Element => {
 				<link rel='icon' type='image/png' sizes='16x16' href='/favicon-16x16.png' />
 				<link rel='manifest' href='/site.webmanifest' />
 			</Head>
-			<Container>
-				{/* <nav>nav</nav> */}
-				<main>{children}</main>
-				{/* <footer>footer</footer> */}
-			</Container>
+			<main>{children}</main>
 		</>
 	)
 }
 
-export default Layout
+export default HeadLayout
 
-// Path: src/components/layout.tsx
+// Path: src/components/head-layout.tsx
 // Created at: 13:03:44 - 07/03/2023
 // Language: Typescript
 // Framework: React/Next.js
