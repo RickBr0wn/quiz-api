@@ -23,10 +23,7 @@ type BasicStatisticsProps = {}
 
 const BasicStatistics: FC<BasicStatisticsProps> = (): JSX.Element => {
 	return (
-		<Box mx={'auto'}>
-			{/* <chakra.h1 textAlign={'center'} fontSize={'4xl'} py={10} fontWeight={'bold'}>
-				Everyday more questions are published!
-			</chakra.h1> */}
+		<Box mx={'auto'} w='100%'>
 			<SimpleGrid columns={{ base: 1, md: 3 }} spacing={{ base: 5, lg: 8 }}>
 				<StatsCard title={'Questions'} stat={'3,230'} icon={<BiQuestionMark size={'3em'} />} />
 				<StatsCard title={'Users'} stat={'150'} icon={<BsPerson size={'3em'} />} />
@@ -43,7 +40,7 @@ export default BasicStatistics
 // Language: Typescript
 // Framework: React/Next.js
 
-function StatsCard(props: StatsCardProps) {
+export function StatsCard(props: StatsCardProps) {
 	const { title, stat, icon } = props
 	return (
 		<Stat

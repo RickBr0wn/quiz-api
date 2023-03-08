@@ -8,6 +8,7 @@ import AuthButton from '~/components/auth-button'
 import _log from '~/components/log'
 import prisma from '../lib/prismadb'
 import { addNewQuestion } from '~/helpers/addNewQuestion'
+import Link from 'next/link'
 
 type DemoProps = {
 	questions: Question[]
@@ -80,6 +81,9 @@ export default function Demo({ questions }: DemoProps): JSX.Element {
 			{session?.user ? <Text>Signed in as {session.user.email}</Text> : <Text>Not signed in</Text>}
 			<Flex justify='space-between' p={6} gap={2}>
 				<AuthButton />
+				<Link href='/dashboard'>
+					<Button colorScheme='green'>Dashboard</Button>
+				</Link>
 				<form onSubmit={handleClick}>
 					<Flex flexDir='column' w={'100%'} gap={2}>
 						<Input ref={question} placeholder='question' />

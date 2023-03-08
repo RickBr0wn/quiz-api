@@ -25,7 +25,7 @@ import {
 import {
 	FiHome,
 	FiTrendingUp,
-	FiCompass,
+	FiEdit,
 	FiStar,
 	FiSettings,
 	FiMenu,
@@ -35,19 +35,19 @@ import {
 import { IconType } from 'react-icons'
 import { signOut, useSession } from 'next-auth/react'
 import _log from './log'
-// import { Session } from 'next-auth'
-import { Session } from '@prisma/client'
+import NextLink from 'next/link'
 
 interface LinkItemProps {
 	name: string
 	icon: IconType
+	link: string
 }
 const LinkItems: Array<LinkItemProps> = [
-	{ name: 'Home', icon: FiHome },
-	{ name: 'Trending', icon: FiTrendingUp },
-	{ name: 'Explore', icon: FiCompass },
-	{ name: 'Favourites', icon: FiStar },
-	{ name: 'Settings', icon: FiSettings }
+	{ name: 'Dashboard', icon: FiHome, link: '/dashboard' },
+	{ name: 'Trending', icon: FiTrendingUp, link: '/trending' },
+	{ name: 'Publish', icon: FiEdit, link: '/publish' },
+	{ name: 'Favourites', icon: FiStar, link: '/favourites' },
+	{ name: 'Settings', icon: FiSettings, link: '/settings' }
 ]
 
 interface SidebarProps extends BoxProps {
@@ -57,6 +57,7 @@ interface SidebarProps extends BoxProps {
 interface NavItemProps extends FlexProps {
 	icon: IconType
 	children: string | number
+	link: string
 }
 
 interface MobileProps extends FlexProps {
@@ -95,7 +96,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }): JSX.Element => {
 				username={session?.user?.email?.split('@')[0] || ''}
 				isAdmin={session?.isAdmin || false}
 			/>
-			<Box ml={{ base: 0, md: 60 }} p='4'>
+			<Box ml={{ base: 0, md: 60 }} p='4' h='100%'>
 				{children}
 			</Box>
 		</Box>
@@ -129,7 +130,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 			</Flex>
 			<Box mt={20}>
 				{LinkItems.map(link => (
-					<NavItem key={link.name} icon={link.icon}>
+					<NavItem key={link.name} icon={link.icon} link={link.link}>
 						{link.name}
 					</NavItem>
 				))}
@@ -138,35 +139,37 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 	)
 }
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
 	return (
-		<Link href='#' style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
-			<Flex
-				align='center'
-				p='4'
-				mx='4'
-				borderRadius='lg'
-				role='group'
-				cursor='pointer'
-				_hover={{
-					bg: 'green.300',
-					color: 'white'
-				}}
-				{...rest}
-			>
-				{icon && (
-					<Icon
-						mr='4'
-						fontSize='16'
-						_groupHover={{
-							color: 'white'
-						}}
-						as={icon}
-					/>
-				)}
-				{children}
-			</Flex>
-		</Link>
+		<NextLink href={link}>
+			<Link style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+				<Flex
+					align='center'
+					p='4'
+					mx='4'
+					borderRadius='lg'
+					role='group'
+					cursor='pointer'
+					_hover={{
+						bg: 'green.300',
+						color: 'white'
+					}}
+					{...rest}
+				>
+					{icon && (
+						<Icon
+							mr='4'
+							fontSize='16'
+							_groupHover={{
+								color: 'white'
+							}}
+							as={icon}
+						/>
+					)}
+					{children}
+				</Flex>
+			</Link>
+		</NextLink>
 	)
 }
 

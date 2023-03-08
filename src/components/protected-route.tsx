@@ -1,4 +1,4 @@
-import { Flex, Spinner } from '@chakra-ui/react'
+import { Box, Flex, Spinner } from '@chakra-ui/react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { FC, ReactNode, useEffect } from 'react'
@@ -23,7 +23,7 @@ const ProtectedRoute: FC<ProtectedRouteProps> = ({ children }): JSX.Element => {
 		)
 	}
 
-	return <>{children}</>
+	return <Box h='100%'>{children}</Box>
 }
 
 export default ProtectedRoute
