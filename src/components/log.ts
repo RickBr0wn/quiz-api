@@ -2,7 +2,7 @@ const dataStyle = ['color: #fff', 'border-radius: 2px', 'font-size: 10px'].join(
 
 const lineStyle = ['color: #6699cc', 'border-radius: 2px', 'font-size: 8px'].join(';')
 
-const _log = <T>(data: T, label?: string | null, line?: number | null, color?: string | null) => {
+const _log = <T>(data: T, label?: string | null, color?: string | null, line?: number | null) => {
 	const labelStyle = [
 		'color: #fff',
 		`background-color: ${color ? color : '#33cc33'}`,
