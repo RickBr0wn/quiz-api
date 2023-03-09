@@ -4,9 +4,9 @@ import _log from '~/components/log'
 
 export const addNewQuestion = async (
 	question: string,
-	answer: string,
-	incorrect_answers: string[],
-	stateSetter: Dispatch<SetStateAction<Question[]>>
+	answer: { text: string; correct: boolean },
+	incorrect_answers: { text: string; correct: boolean }[],
+	stateSetter?: Dispatch<SetStateAction<Question[]>>
 ) => {
 	try {
 		const response = await fetch('/api/questions/add-question', {
@@ -25,7 +25,9 @@ export const addNewQuestion = async (
 		const data = await response.json()
 		const newQuestion: Question = data.question
 
-		stateSetter((prev: Question[]) => [...prev, newQuestion])
+		if (stateSetter) {
+			stateSetter((prev: Question[]) => [...prev, newQuestion])
+		}
 	} catch (error) {
 		_log(error, 'ERROR', 'red')
 	}

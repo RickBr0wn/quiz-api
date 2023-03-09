@@ -24,7 +24,7 @@ type BasicStatisticsProps = {}
 const BasicStatistics: FC<BasicStatisticsProps> = (): JSX.Element => {
 	return (
 		<Box mx={'auto'} w='100%'>
-			<SimpleGrid columns={{ base: 2, md: 4 }} spacing={{ base: 5, lg: 8 }}>
+			<SimpleGrid columns={{ base: 2, md: 4 }} spacing={4}>
 				<StatsCard title={'Questions'} stat={'3,230'} icon={<BiQuestionMark size={'3em'} />} />
 				<StatsCard title={'Questions'} stat={'3,230'} icon={<BiQuestionMark size={'3em'} />} />
 				<StatsCard title={'Users'} stat={'150'} icon={<BsPerson size={'3em'} />} />
@@ -51,6 +51,8 @@ export function StatsCard(props: StatsCardProps) {
 			border={'1px solid'}
 			borderColor={useColorModeValue('gray.800', 'gray.500')}
 			rounded={'lg'}
+			marginTop={0}
+			h='100%'
 		>
 			<Flex justifyContent={'space-between'}>
 				<Box pl={{ base: 2, md: 4 }}>

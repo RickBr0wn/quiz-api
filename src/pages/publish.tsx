@@ -29,12 +29,14 @@ import {
 } from '@chakra-ui/react'
 import BasicStatistics from '~/components/basic-statistics'
 
+import { addNewQuestion } from '~/helpers/addNewQuestion'
+
 type PublishProps = {}
 
 const Publish: FC<PublishProps> = (): JSX.Element => {
-	const [disabled, setDisabled] = useState(false)
-	const toast = useToast()
 	const { isOpen, onOpen, onClose } = useDisclosure()
+	const [disabled, setDisabled] = useState(true)
+	const toast = useToast()
 
 	const [questionText, setQuestionText] = useState('')
 	const [answerText, setAnswerText] = useState('')
@@ -42,27 +44,56 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 	const [incorrectTwo, setIncorrectTwo] = useState('')
 	const [incorrectThree, setIncorrectThree] = useState('')
 
-	useEffect(() => {}, [])
+	useEffect(() => {
+		setDisabled(
+			questionText.length < 3 ||
+				questionText.length > 50 ||
+				answerText.length < 3 ||
+				answerText.length > 50 ||
+				incorrectOne.length < 3 ||
+				incorrectOne.length > 50 ||
+				incorrectTwo.length < 3 ||
+				incorrectTwo.length > 50 ||
+				incorrectThree.length < 3 ||
+				incorrectThree.length > 50
+		)
+	}, [answerText, incorrectOne, incorrectThree, incorrectTwo, questionText])
 
 	const isValidInput = (input: string) => {
 		return input.length > 3 && input.length > 50
 	}
 
 	const handleButtonClick = () => {
-		disabled ? () => {} : onOpen()
+		if (disabled) {
+			return
+		}
+
+		onOpen()
 	}
 
-	const handleModalClick = () => {
-		setTimeout(() => {
-			toast({
-				title: 'Question published.',
-				description: 'The question has been published.',
-				status: 'success',
-				duration: 5000,
-				isClosable: true,
-				position: 'top-right'
-			})
-		}, 2000)
+	const handleModalClick = async () => {
+		const answer = { text: answerText, correct: true }
+
+		const answers = [
+			{ text: incorrectOne, correct: false },
+			{ text: incorrectTwo, correct: false },
+			{ text: incorrectThree, correct: false }
+		]
+
+		await addNewQuestion(questionText, answer, answers)
+
+		setTimeout(
+			() =>
+				toast({
+					title: 'Question published.',
+					description: 'The question has been published.',
+					status: 'success',
+					duration: 5000,
+					isClosable: true,
+					position: 'top-right'
+				}),
+			2000
+		)
 		resetFields()
 		onClose()
 	}
@@ -78,7 +109,7 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 	return (
 		<ProtectedRoute>
 			<MainLayout>
-				<Container py={5} maxW={'container.lg'} mb={30}>
+				<Container py={5} maxW={'container.lg'}>
 					<Grid
 						templateColumns={{
 							base: 'repeat(1, 1fr)',
@@ -88,13 +119,12 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 						gap={6}
 					>
 						<GridItem w='100%' colSpan={{ base: 1, sm: 2, md: 2 }}>
-							<Heading as={'h2'}>Concentrate now!</Heading>
-							<Box fontSize={'sm'}>This is where the mistakes can happen.</Box>
+							<Heading as={'h1'}>New Question Entry</Heading>
 							<Box fontSize={'sm'}>Remember.. Typos cause headaches!</Box>
 						</GridItem>
 						<GridItem w='100%'>
 							<Flex flexDirection={'column'}>
-								<Text fontSize={'4xl'} fontWeight={'bold'}>
+								<Text color='green.300' fontSize={'4xl'} fontWeight={'bold'}>
 									20%
 								</Text>
 								<Box fontSize={'sm'}>
@@ -104,7 +134,7 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 						</GridItem>
 						<GridItem w='100%'>
 							<Flex flexDirection={'column'}>
-								<Text fontSize={'4xl'} fontWeight={'bold'}>
+								<Text color='green.300' fontSize={'4xl'} fontWeight={'bold'}>
 									90%
 								</Text>{' '}
 								<Box fontSize={'sm'}>Of questions have been requested.</Box>
@@ -191,7 +221,7 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 				<Modal isOpen={isOpen} onClose={onClose}>
 					<ModalOverlay />
 					<ModalContent>
-						<ModalHeader>Publish</ModalHeader>
+						<ModalHeader>Are You Sure?</ModalHeader>
 						<ModalCloseButton />
 						<ModalBody>
 							<Text>
