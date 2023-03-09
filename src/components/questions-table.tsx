@@ -22,7 +22,7 @@ const QuestionsTable: FC<QuestionsTableProps> = ({ questions }): JSX.Element => 
 	return (
 		<TableContainer>
 			<Table variant='simple' size={'md'}>
-				<TableCaption fontWeight='bold'>Most Recent Published Questions</TableCaption>
+				<TableCaption fontWeight='bold'>Most Recent</TableCaption>
 				<Thead>
 					<Tr>
 						{/* <Th>Publisher</Th> */}
@@ -52,12 +52,12 @@ const QuestionsTable: FC<QuestionsTableProps> = ({ questions }): JSX.Element => 
 						</Tr>
 					))}
 				</Tbody>
-				<Tfoot>
+				{/* <Tfoot>
 					<Tr>
 						<Th>Question</Th>
 						<Th>Answers</Th>
 					</Tr>
-				</Tfoot>
+				</Tfoot> */}
 			</Table>
 		</TableContainer>
 	)
