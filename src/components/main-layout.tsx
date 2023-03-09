@@ -53,12 +53,14 @@ const LinkItems: Array<LinkItemProps> = [
 
 interface SidebarProps extends BoxProps {
 	onClose: () => void
+	activeTitle: string
 }
 
 interface NavItemProps extends FlexProps {
 	icon: IconType
 	children: string | number
 	link: string
+	active: boolean
 }
 
 interface MobileProps extends FlexProps {
@@ -68,16 +70,20 @@ interface MobileProps extends FlexProps {
 	isAdmin: boolean
 }
 
-type MainLayoutProps = { children: ReactNode }
+type MainLayoutProps = { children: ReactNode; activeTitle: string }
 
-const MainLayout: FC<MainLayoutProps> = ({ children }): JSX.Element => {
+const MainLayout: FC<MainLayoutProps> = ({ children, activeTitle }): JSX.Element => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const { data: session } = useSession()
 
 	return (
 		<Box minH='100vh' bg={useColorModeValue('gray.100', 'gray.900')}>
 			<ScreenSize />
-			<SidebarContent onClose={() => onClose} display={{ base: 'none', lg: 'block' }} />
+			<SidebarContent
+				onClose={() => onClose}
+				display={{ base: 'none', md: 'block' }}
+				activeTitle={activeTitle}
+			/>
 			<Drawer
 				autoFocus={false}
 				isOpen={isOpen}
@@ -88,7 +94,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }): JSX.Element => {
 				size='full'
 			>
 				<DrawerContent>
-					<SidebarContent onClose={onClose} />
+					<SidebarContent onClose={onClose} activeTitle={activeTitle} />
 				</DrawerContent>
 			</Drawer>
 			{/* mobilenav */}
@@ -98,7 +104,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }): JSX.Element => {
 				username={session?.user?.email?.split('@')[0] || ''}
 				isAdmin={session?.isAdmin || false}
 			/>
-			<Box ml={{ base: 0, lg: 60 }} p='4' minH='calc(100vh - 80px)'>
+			<Box ml={{ base: 0, md: 52, xl: 60 }} p='4' minH='calc(100vh - 80px)'>
 				{children}
 			</Box>
 		</Box>
@@ -112,14 +118,14 @@ export default MainLayout
 // Language: Typescript
 // Framework: React/Next.js
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+const SidebarContent = ({ onClose, activeTitle, ...rest }: SidebarProps) => {
 	return (
 		<Box
 			transition='3s ease'
 			bg={useColorModeValue('white', 'gray.900')}
 			borderRight='1px'
 			borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-			w={{ base: 'full', lg: 60 }}
+			w={{ base: 'full', md: 52, xl: 60 }}
 			pos='fixed'
 			h='full'
 			{...rest}
@@ -128,11 +134,17 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 				<Text color='green.300' fontSize='xl' fontWeight='black' mt={6}>
 					QUIZ QUESTIONS API
 				</Text>
-				<CloseButton display={{ base: 'flex', lg: 'none' }} onClick={onClose} />
+				<CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
 			</Flex>
 			<Box mt={20}>
 				{LinkItems.map(link => (
-					<NavItem key={link.name} icon={link.icon} link={link.link}>
+					<NavItem
+						key={link.name}
+						icon={link.icon}
+						link={link.link}
+						active={activeTitle.toLowerCase() === link.name.toLowerCase()}
+						transition='0.2s ease'
+					>
 						{link.name}
 					</NavItem>
 				))}
@@ -141,7 +153,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 	)
 }
 
-const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, link, active, ...rest }: NavItemProps) => {
 	return (
 		<NextLink href={link}>
 			<Link style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
@@ -149,13 +161,16 @@ const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
 					align='center'
 					p='4'
 					mx='4'
-					borderRadius='lg'
+					borderRadius='md'
 					role='group'
 					cursor='pointer'
 					_hover={{
 						bg: 'green.300',
+						opacity: 0.8,
 						color: 'white'
 					}}
+					fontWeight={active ? 'bold' : 'normal'}
+					bg={active ? 'green.300' : ''}
 					{...rest}
 				>
 					{icon && (
@@ -178,18 +193,18 @@ const NavItem = ({ icon, children, link, ...rest }: NavItemProps) => {
 const MobileNav = ({ onOpen, username, image, isAdmin, ...rest }: MobileProps) => {
 	return (
 		<Flex
-			ml={{ base: 0, lg: 60 }}
-			px={{ base: 4, lg: 4 }}
+			ml={{ base: 0, md: 52, xl: 60 }}
+			px={{ base: 4, md: 4 }}
 			height='20'
 			alignItems='center'
 			bg={useColorModeValue('white', 'gray.900')}
 			borderBottomWidth='1px'
 			borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
-			justifyContent={{ base: 'space-between', lg: 'flex-end' }}
+			justifyContent={{ base: 'space-between', md: 'flex-end' }}
 			{...rest}
 		>
 			<IconButton
-				display={{ base: 'flex', lg: 'none' }}
+				display={{ base: 'flex', md: 'none' }}
 				onClick={onOpen}
 				variant='outline'
 				aria-label='open menu'
@@ -197,7 +212,7 @@ const MobileNav = ({ onOpen, username, image, isAdmin, ...rest }: MobileProps) =
 			/>
 
 			<Text
-				display={{ base: 'flex', lg: 'none' }}
+				display={{ base: 'flex', md: 'none' }}
 				fontSize='2xl'
 				fontWeight='black'
 				color='green.300'
@@ -205,15 +220,15 @@ const MobileNav = ({ onOpen, username, image, isAdmin, ...rest }: MobileProps) =
 				QUIZ QUESTIONS API
 			</Text>
 
-			<HStack spacing={{ base: '0', lg: '6' }}>
-				<IconButton size='lg' variant='ghost' aria-label='open menu' icon={<FiBell />} />
+			<HStack spacing={{ base: '0', md: '6' }}>
+				<IconButton size='md' variant='ghost' aria-label='open menu' icon={<FiBell />} />
 				<Flex alignItems={'center'}>
 					<Menu>
 						<MenuButton py={2} transition='all 0.3s' _focus={{ boxShadow: 'none' }}>
 							<HStack>
 								<Avatar name={username} size={'sm'} src={image} />
 								<VStack
-									display={{ base: 'none', lg: 'flex' }}
+									display={{ base: 'none', md: 'flex' }}
 									alignItems='flex-start'
 									spacing='1px'
 									ml='2'
@@ -223,7 +238,7 @@ const MobileNav = ({ onOpen, username, image, isAdmin, ...rest }: MobileProps) =
 										{isAdmin ? 'Admin' : 'User'}
 									</Text>
 								</VStack>
-								<Box display={{ base: 'none', lg: 'flex' }}>
+								<Box display={{ base: 'none', md: 'flex' }}>
 									<FiChevronDown />
 								</Box>
 							</HStack>

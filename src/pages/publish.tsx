@@ -108,7 +108,7 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 
 	return (
 		<ProtectedRoute>
-			<MainLayout>
+			<MainLayout activeTitle='publish'>
 				<Container py={5} maxW={'container.lg'}>
 					<Grid
 						templateColumns={{

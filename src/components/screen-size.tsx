@@ -20,8 +20,8 @@ const ScreenSize: FC<ScreenSizeProps> = (): JSX.Element => {
 			<Heading
 				position={'absolute'}
 				// top={0}
-				bottom={4}
-				left={4}
+				top={4}
+				left='50%'
 				// right={0}
 				visibility={{ base: 'visible', sm: 'hidden', '2xl': 'hidden' }}
 			>
@@ -29,8 +29,8 @@ const ScreenSize: FC<ScreenSizeProps> = (): JSX.Element => {
 			</Heading>
 			<Heading
 				position={'absolute'}
-				bottom={4}
-				left={4}
+				top={4}
+				left='50%'
 				visibility={{ base: 'hidden', sm: 'visible', md: 'hidden', '2xl': 'hidden' }}
 				zIndex={1000}
 			>
@@ -38,8 +38,8 @@ const ScreenSize: FC<ScreenSizeProps> = (): JSX.Element => {
 			</Heading>
 			<Heading
 				position={'absolute'}
-				bottom={4}
-				left={4}
+				top={4}
+				left='50%'
 				visibility={{ base: 'hidden', md: 'visible', lg: 'hidden', '2xl': 'hidden' }}
 				zIndex={1000}
 			>
@@ -47,8 +47,8 @@ const ScreenSize: FC<ScreenSizeProps> = (): JSX.Element => {
 			</Heading>
 			<Heading
 				position={'absolute'}
-				bottom={4}
-				left={4}
+				top={4}
+				left='50%'
 				visibility={{ base: 'hidden', lg: 'visible', xl: 'hidden', '2xl': 'hidden' }}
 				zIndex={1000}
 			>
@@ -56,8 +56,8 @@ const ScreenSize: FC<ScreenSizeProps> = (): JSX.Element => {
 			</Heading>
 			<Heading
 				position={'absolute'}
-				bottom={4}
-				left={4}
+				top={4}
+				left='50%'
 				visibility={{ base: 'hidden', xl: 'visible', '2xl': 'hidden' }}
 				zIndex={1000}
 			>
@@ -65,8 +65,8 @@ const ScreenSize: FC<ScreenSizeProps> = (): JSX.Element => {
 			</Heading>
 			<Heading
 				position={'absolute'}
-				bottom={4}
-				left={4}
+				top={4}
+				left='50%'
 				visibility={{ base: 'hidden', '2xl': 'visible' }}
 				zIndex={1000}
 			>

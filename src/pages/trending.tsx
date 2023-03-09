@@ -8,7 +8,7 @@ type TrendingProps = {}
 const Trending: FC<TrendingProps> = (): JSX.Element => {
 	return (
 		<ProtectedRoute>
-			<MainLayout>
+			<MainLayout activeTitle='trending'>
 				<Graph />
 				<Graph />
 				<Graph />

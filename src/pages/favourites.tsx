@@ -8,7 +8,7 @@ type FavouritesProps = {}
 const Favourites: FC<FavouritesProps> = (): JSX.Element => {
 	return (
 		<ProtectedRoute>
-			<MainLayout>
+			<MainLayout activeTitle='favourites'>
 				<Text>Favourites</Text>
 			</MainLayout>
 		</ProtectedRoute>

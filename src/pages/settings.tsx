@@ -8,7 +8,7 @@ type SettingsProps = {}
 const Settings: FC<SettingsProps> = (): JSX.Element => {
 	return (
 		<ProtectedRoute>
-			<MainLayout>
+			<MainLayout activeTitle='settings'>
 				<Text>Favourites</Text>
 			</MainLayout>
 		</ProtectedRoute>

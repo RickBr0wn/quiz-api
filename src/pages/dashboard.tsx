@@ -17,7 +17,7 @@ type DashboardProps = { questions: Question[] }
 const Dashboard: FC<DashboardProps> = ({ questions }): JSX.Element => {
 	return (
 		<ProtectedRoute>
-			<MainLayout>
+			<MainLayout activeTitle='dashboard'>
 				{/* <Flex flexDir='column' gap={4}>
 					<BasicStatistics />
 					<Flex w='100%' gap={4} flexDir={{ base: 'column', md: 'row' }}>
