@@ -20,7 +20,8 @@ import {
 	MenuButton,
 	MenuDivider,
 	MenuItem,
-	MenuList
+	MenuList,
+	useColorMode
 } from '@chakra-ui/react'
 import {
 	FiHome,
@@ -37,6 +38,7 @@ import { signOut, useSession } from 'next-auth/react'
 import _log from './log'
 import NextLink from 'next/link'
 import ScreenSize from './screen-size'
+import DarkModeToggle from './dark-mode-toggle'
 
 interface LinkItemProps {
 	name: string
@@ -191,6 +193,7 @@ const NavItem = ({ icon, children, link, active, ...rest }: NavItemProps) => {
 }
 
 const MobileNav = ({ onOpen, username, image, isAdmin, ...rest }: MobileProps) => {
+	const { toggleColorMode } = useColorMode()
 	return (
 		<Flex
 			ml={{ base: 0, md: 52, xl: 60 }}
@@ -247,7 +250,7 @@ const MobileNav = ({ onOpen, username, image, isAdmin, ...rest }: MobileProps) =
 							// bg={useColorModeValue('white', 'gray.900')}
 							borderColor={useColorModeValue('gray.200', 'gray.700')}
 						>
-							<MenuItem>Settings</MenuItem>
+							<MenuItem onClick={toggleColorMode}>Toggle Color Mode</MenuItem>
 							<MenuDivider />
 							<MenuItem
 								onClick={() => {
