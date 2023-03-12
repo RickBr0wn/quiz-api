@@ -1,4 +1,7 @@
-import { ChangeEvent, FC, useEffect, useState } from 'react'
+import type { NextPage } from 'next'
+import type { GetStaticProps } from 'next'
+// import type { GetServerSideProps } from 'next'
+import { ChangeEvent, useEffect, useState } from 'react'
 import MainLayout from '~/components/main-layout'
 import ProtectedRoute from '~/components/protected-route'
 import {
@@ -11,11 +14,9 @@ import {
 	Heading,
 	useColorModeValue,
 	Input,
-	SimpleGrid,
 	FormLabel,
 	Stack,
 	Button,
-	Spacer,
 	Checkbox,
 	useToast,
 	Modal,
@@ -31,9 +32,9 @@ import BasicStatistics from '~/components/basic-statistics'
 
 import { addNewQuestion } from '~/helpers/addNewQuestion'
 
-type PublishProps = {}
+interface PublishProps {}
 
-const Publish: FC<PublishProps> = (): JSX.Element => {
+const Publish: NextPage<PublishProps> = (): JSX.Element => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
 	const [disabled, setDisabled] = useState(true)
 	const toast = useToast()
@@ -80,20 +81,34 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 			{ text: incorrectThree, correct: false }
 		]
 
-		await addNewQuestion(questionText, answer, answers)
+		const newQuestion = await addNewQuestion(questionText, answer, answers)
 
-		setTimeout(
-			() =>
-				toast({
-					title: 'Question published.',
-					description: 'The question has been published.',
-					status: 'success',
-					duration: 5000,
-					isClosable: true,
-					position: 'top-right'
-				}),
-			2000
-		)
+		newQuestion
+			? setTimeout(
+					() =>
+						toast({
+							title: 'Question published.',
+							description: 'The question has been published.',
+							status: 'success',
+							duration: 5000,
+							isClosable: true,
+							position: 'top-right'
+						}),
+					2000
+			  )
+			: setTimeout(
+					() =>
+						toast({
+							title: 'Error publishing Question.',
+							description: 'The question has not been published.',
+							status: 'error',
+							duration: 5000,
+							isClosable: true,
+							position: 'top-right'
+						}),
+					2000
+			  )
+
 		resetFields()
 		onClose()
 	}
@@ -254,9 +269,58 @@ const Publish: FC<PublishProps> = (): JSX.Element => {
 	)
 }
 
+/**
+ * @param context https://nextjs.org/docs/api-reference/data-fetching/get-static-props#context-parameter
+ * @return https://nextjs.org/docs/api-reference/data-fetching/get-static-props#getstaticprops-return-values
+ */
+export const getStaticProps: GetStaticProps<PublishProps> = async context => {
+	// ...asyncronous code
+	return {
+		props: {} // will be passed to the page component as props
+	}
+}
+
+/**
+ * @param context https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
+ * @return https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#getserversideprops-return-values
+ */
+// export const getServerSideProps: GetServerSideProps = async context => {
+//   // ...asyncronous code
+//   return {
+//     props: {} // will be passed to the page component as props
+//   }
+// }
+
+/**
+ * @return https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#getserversideprops-return-values
+ */
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   // ...asyncronous code
+//   return {
+//     paths: [
+//       {
+//         params: {
+//           /* ...params */
+//         }
+//       } // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#paths
+//     ],
+//     fallback: true // true, false or 'blocking' // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false
+//   }
+// }
+
+/**
+ * @param context https://nextjs.org/docs/api-reference/data-fetching/get-initial-props#context-object
+ */
+// Test.getInitialProps = async context => {
+//   // ...asyncronous code
+//   return {
+//     props: {} // will be passed to the page component as props
+//   }
+// }
+
 export default Publish
 
 // Path: src/pages/publish.tsx
-// Created at: 16:22:45 - 08/03/2023
+// Created at: 23:10:26 - 11/03/2023
 // Language: Typescript
 // Framework: React/Next.js

@@ -1,3 +1,6 @@
+import type { NextPage } from 'next'
+// import type { GetStaticProps } from 'next'
+// import type { GetServerSideProps } from 'next'
 import { Box, Flex, Grid, GridItem, SimpleGrid, Stack, useColorModeValue } from '@chakra-ui/react'
 import type { GetStaticProps } from 'next'
 import prisma from '../lib/prismadb'
@@ -12,9 +15,11 @@ import Graph from '~/components/graph'
 import { BsPerson } from 'react-icons/bs'
 import { GoLocation } from 'react-icons/go'
 
-type DashboardProps = { questions: Question[] }
+interface DashboardProps {
+	questions: Question[]
+}
 
-const Dashboard: FC<DashboardProps> = ({ questions }): JSX.Element => {
+const Dashboard: NextPage<DashboardProps> = ({ questions }): JSX.Element => {
 	return (
 		<ProtectedRoute>
 			<MainLayout activeTitle='dashboard'>
@@ -112,7 +117,11 @@ const Dashboard: FC<DashboardProps> = ({ questions }): JSX.Element => {
 	)
 }
 
-export const getStaticProps: GetStaticProps<DashboardProps> = async () => {
+/**
+ * @param context https://nextjs.org/docs/api-reference/data-fetching/get-static-props#context-parameter
+ * @return https://nextjs.org/docs/api-reference/data-fetching/get-static-props#getstaticprops-return-values
+ */
+export const getStaticProps: GetStaticProps<DashboardProps> = async context => {
 	const questions = await prisma.question.findMany({
 		include: {
 			answers: true
@@ -121,14 +130,52 @@ export const getStaticProps: GetStaticProps<DashboardProps> = async () => {
 
 	return {
 		props: {
-			questions: JSON.parse(JSON.stringify(questions))
+			questions: JSON.parse(JSON.stringify(questions)) // will be passed to the page component as props
 		}
 	}
 }
 
+/**
+ * @param context https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
+ * @return https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#getserversideprops-return-values
+ */
+// export const getServerSideProps: GetServerSideProps = async context => {
+//   // ...asyncronous code
+//   return {
+//     props: {} // will be passed to the page component as props
+//   }
+// }
+
+/**
+ * @return https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#getserversideprops-return-values
+ */
+// export const getStaticPaths: GetStaticPaths = async () => {
+//   // ...asyncronous code
+//   return {
+//     paths: [
+//       {
+//         params: {
+//           /* ...params */
+//         }
+//       } // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#paths
+//     ],
+//     fallback: true // true, false or 'blocking' // https://nextjs.org/docs/api-reference/data-fetching/get-static-paths#fallback-false
+//   }
+// }
+
+/**
+ * @param context https://nextjs.org/docs/api-reference/data-fetching/get-initial-props#context-object
+ */
+// Test.getInitialProps = async context => {
+//   // ...asyncronous code
+//   return {
+//     props: {} // will be passed to the page component as props
+//   }
+// }
+
 export default Dashboard
 
 // Path: src/pages/dashboard.tsx
-// Created at: 01:08:49 - 08/03/2023
+// Created at: 23:26:26 - 11/03/2023
 // Language: Typescript
 // Framework: React/Next.js

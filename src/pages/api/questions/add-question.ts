@@ -53,7 +53,7 @@ export default async function handler(req: _NextApiRequest, res: NextApiResponse
 			question: q
 		})
 	} catch (error) {
-		res.status(200).json({
+		res.status(500).json({
 			message: `There has been an error: ${error}`
 		})
 	}
