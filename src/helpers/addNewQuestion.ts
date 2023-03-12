@@ -27,6 +27,7 @@ export const addNewQuestion = async (
 
 		if (stateSetter) {
 			stateSetter((prev: Question[]) => [...prev, newQuestion])
+			return newQuestion
 		}
 	} catch (error) {
 		_log(error, 'ERROR', 'red')
