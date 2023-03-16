@@ -1,1 +1,2 @@
 GET http://127.0.0.1:3000/api/questions/get-all-questions HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiY2xmYTEyeDhlMDAwMDlrZWdid3lwMGdpMSIsImlhdCI6MTY3ODkwNTcwMCwiZXhwIjoxNjg2NjgxNzAwfQ.h1gbZQsFwXGz8dgsPkHbQUp56y18IPX6vzFZBmts2cA
