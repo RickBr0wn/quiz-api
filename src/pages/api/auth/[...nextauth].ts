@@ -1,10 +1,12 @@
-import NextAuth from 'next-auth'
+import NextAuth, { Session, User } from 'next-auth'
 import DiscordProvider from 'next-auth/providers/discord'
 import { PrismaAdapter } from '@next-auth/prisma-adapter'
 import prisma from '../../../lib/prismadb'
 import _log from '~/components/log'
+import { AdapterUser } from 'next-auth/adapters'
+import { JWT } from 'next-auth/jwt'
 
-export default NextAuth({
+export const authOptions = {
 	adapter: PrismaAdapter(prisma),
 	providers: [
 		DiscordProvider({
@@ -13,9 +15,19 @@ export default NextAuth({
 		})
 	],
 	callbacks: {
-		async session({ session, user, token }) {
+		async session({
+			session,
+			user,
+			token
+		}: {
+			session: Session
+			user: User | AdapterUser
+			token: JWT
+		}) {
 			session.isAdmin = user.isAdmin
-			return session 
+			return session
 		}
 	}
-})
+}
+
+export default NextAuth(authOptions)
