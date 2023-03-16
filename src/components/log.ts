@@ -10,7 +10,7 @@ const _log = <T>(data: T, label?: string | null, color?: string | null, line?: n
 		'font-size: 12px'
 	].join(';')
 
-	console.group(`%c${label ? label : '*** LOG ***'}`, labelStyle)
+	console.group(`%c${label ? label.toUpperCase() : '*** LOG ***'}`, labelStyle)
 
 	console.log(`%c${JSON.stringify(data, null, 2)}`, dataStyle)
 
