@@ -17,7 +17,7 @@ import { GoLocation } from 'react-icons/go'
 import ErrorFallback from '~/components/error-fallback'
 import { ErrorBoundary } from 'react-error-boundary'
 import _log from '~/components/log'
-import StatsCard from '~/components/stats-card'
+import { StatsCard } from '~/components/basic-statistics'
 
 interface DashboardProps {
 	questions: Question[]
