@@ -65,7 +65,7 @@ type GraphProps = {}
 
 const Graph: FC<GraphProps> = (): JSX.Element => {
 	return (
-		<Flex flexDir='column' w='full' p={{ base: 2, md: 6 }}>
+		<Flex flexDir='column' w='full' flex={1} p={{ base: 2, md: 6 }}>
 			<Text fontWeight='bold'>Publishing Frequency</Text>
 			<Line data={data} options={options} />
 		</Flex>
