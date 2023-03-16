@@ -6,7 +6,7 @@ import type { GetStaticProps } from 'next'
 import prisma from '../lib/prismadb'
 import type { FC } from 'react'
 import { BiQuestionMark } from 'react-icons/bi'
-import BasicStatistics, { StatsCard } from '~/components/basic-statistics'
+
 import MainLayout from '~/components/main-layout'
 import ProtectedRoute from '~/components/protected-route'
 import QuestionsTable from '~/components/questions-table'
@@ -14,57 +14,37 @@ import { Question } from '@prisma/client'
 import Graph from '~/components/graph'
 import { BsPerson } from 'react-icons/bs'
 import { GoLocation } from 'react-icons/go'
+import ErrorFallback from '~/components/error-fallback'
+import { ErrorBoundary } from 'react-error-boundary'
+import _log from '~/components/log'
+import StatsCard from '~/components/stats-card'
 
 interface DashboardProps {
 	questions: Question[]
+	totalQuestions: number
 }
 
-const Dashboard: NextPage<DashboardProps> = ({ questions }): JSX.Element => {
+const Dashboard: NextPage<DashboardProps> = ({ questions, totalQuestions }): JSX.Element => {
 	return (
 		<ProtectedRoute>
 			<MainLayout activeTitle='dashboard'>
-				{/* <Flex flexDir='column' gap={4}>
-					<BasicStatistics />
-					<Flex w='100%' gap={4} flexDir={{ base: 'column', md: 'row' }}>
-						<SimpleGrid flex={2} columns={{ base: 2, md: 1 }} w='100%' spacing={4}>
-							<StatsCard
-								title={'Questions'}
-								stat={'3,230'}
-								icon={<BiQuestionMark size={'3em'} />}
-							/>
-							<StatsCard
-								title={'Questions'}
-								stat={'3,230'}
-								icon={<BiQuestionMark size={'3em'} />}
-							/>
-						</SimpleGrid>
-
-						<Box
-							shadow={'xl'}
-							border={'1px solid'}
-							borderColor={useColorModeValue('gray.800', 'gray.500')}
-							rounded={'lg'}
-							maxW={{ base: '100%', md: '50%' }}
-						>
-							<Graph />
-						</Box>
-					</Flex>
-					<Box
-						flex={1}
-						shadow={'xl'}
-						border={'1px solid'}
-						borderColor={useColorModeValue('gray.800', 'gray.500')}
-						rounded={'lg'}
-					>
-						<QuestionsTable questions={questions} />
-					</Box>
-				</Flex> */}
 				<Grid gap={4} templateRows={'repeat(8, 1fr)'} templateColumns={'repeat(4, 1fr)'}>
 					<GridItem colSpan={{ base: 2, lg: 1 }}>
-						<StatsCard title={'Questions'} stat={'3,230'} icon={<BiQuestionMark size={'3em'} />} />
+						<ErrorBoundary
+							FallbackComponent={ErrorFallback}
+							onReset={() => {
+								// reset the state of your app so the error doesn't happen again
+							}}
+						>
+							<StatsCard
+								title={'Total Questions Published'}
+								stat={`${totalQuestions}`}
+								icon={<BiQuestionMark size={'3em'} />}
+							/>
+						</ErrorBoundary>
 					</GridItem>
 					<GridItem colSpan={{ base: 2, lg: 1 }}>
-						<StatsCard title={'Questions'} stat={'3,230'} icon={<BiQuestionMark size={'3em'} />} />
+						<StatsCard title={'Questions'} stat={'45'} icon={<BiQuestionMark size={'3em'} />} />
 					</GridItem>
 					<GridItem colSpan={{ base: 2, lg: 1 }}>
 						<StatsCard title={'Users'} stat={'150'} icon={<BsPerson size={'3em'} />} />
@@ -128,9 +108,12 @@ export const getStaticProps: GetStaticProps<DashboardProps> = async context => {
 		}
 	})
 
+	const totalQuestions = await (await prisma.question.count({ select: { _all: true } }))._all
+
 	return {
 		props: {
-			questions: JSON.parse(JSON.stringify(questions)) // will be passed to the page component as props
+			questions: JSON.parse(JSON.stringify(questions)), // will be passed to the page component as props
+			totalQuestions
 		}
 	}
 }
