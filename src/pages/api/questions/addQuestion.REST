@@ -11,10 +11,11 @@ content-type: application/json
 
 ### TEST SUCCESSFUL POST ###
 POST http://127.0.0.1:3000/api/questions/add-question HTTP/1.1
-content-type: application/json
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiY2xmYTEyeDhlMDAwMDlrZWdid3lwMGdpMSIsImlhdCI6MTY3ODkwNTcwMCwiZXhwIjoxNjg2NjgxNzAwfQ.h1gbZQsFwXGz8dgsPkHbQUp56y18IPX6vzFZBmts2cA
 
 {
-    "question": "What is the capital of Denmark?",
-		"answer": "Copenhagen",
+    "question": "What is the capital of France?",
+		"answer": "Paris",
 		"incorrect_answers": ["Aarhus", "Odense", "Aalborg"]
 }
