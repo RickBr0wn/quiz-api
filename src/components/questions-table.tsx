@@ -37,7 +37,7 @@ const QuestionsTable: FC<QuestionsTableProps> = ({ questions }): JSX.Element => 
 							<Td>{question.text.substring(0, 32) + (question.text.length > 32 ? '...' : '')}</Td>
 							<Td>
 								<Flex>
-									{shuffle(question.answers).map((answer: Answer) => (
+									{/* {shuffle(question.answers).map((answer: Answer) => (
 										<Text
 											color={answer.correct ? 'green.300' : ''}
 											fontWeight={answer.correct ? 'black' : 'normal'}
@@ -46,7 +46,8 @@ const QuestionsTable: FC<QuestionsTableProps> = ({ questions }): JSX.Element => 
 										>
 											{answer.text.substring(0, 12) + (answer.text.length > 12 ? '...' : '')}
 										</Text>
-									))}
+									))} */}
+									X
 								</Flex>
 							</Td>
 						</Tr>

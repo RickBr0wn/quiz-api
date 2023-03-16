@@ -26,11 +26,13 @@ import {
 	ModalFooter,
 	ModalBody,
 	ModalCloseButton,
-	useDisclosure
+	useDisclosure,
+	CheckboxGroup
 } from '@chakra-ui/react'
 import BasicStatistics from '~/components/basic-statistics'
-
 import { addNewQuestion } from '~/helpers/addNewQuestion'
+import { Category } from '@prisma/client'
+import _log from '~/components/log'
 
 interface PublishProps {}
 
@@ -44,6 +46,8 @@ const Publish: NextPage<PublishProps> = (): JSX.Element => {
 	const [incorrectOne, setIncorrectOne] = useState('')
 	const [incorrectTwo, setIncorrectTwo] = useState('')
 	const [incorrectThree, setIncorrectThree] = useState('')
+
+	const [categories, setCategories] = useState<string[]>([])
 
 	useEffect(() => {
 		setDisabled(
@@ -120,6 +124,18 @@ const Publish: NextPage<PublishProps> = (): JSX.Element => {
 		setIncorrectTwo('')
 		setIncorrectThree('')
 	}
+
+	const handleCategoryChange = (e: ChangeEvent<HTMLInputElement>, category: string) => {
+		const { value, checked } = e.target
+
+		if (checked) {
+			setCategories(prev => [...prev, value])
+		} else {
+			setCategories(prev => [...prev.filter(category => category !== value)])
+		}
+	}
+
+	_log(categories, 'categories')
 
 	return (
 		<ProtectedRoute>
@@ -213,14 +229,32 @@ const Publish: NextPage<PublishProps> = (): JSX.Element => {
 						</Stack>
 					</Flex>
 					<Stack spacing={5} mt={8} direction='row' justify='space-evenly'>
-						<Checkbox colorScheme='green' defaultChecked>
-							General Knowledge
-						</Checkbox>
-						<Checkbox colorScheme='green'>Sport</Checkbox>
-						<Checkbox colorScheme='green'>Politics</Checkbox>
-						<Checkbox colorScheme='green'>Literature</Checkbox>
-						<Checkbox colorScheme='green'>Science</Checkbox>
-						<Checkbox colorScheme='green'>Animal Kingdom</Checkbox>
+						<CheckboxGroup colorScheme='green'>
+							<Checkbox
+								onChange={e => handleCategoryChange(e, 'general-knowledge')}
+								value='general-knowledge'
+							>
+								General Knowledge
+							</Checkbox>
+							<Checkbox onChange={e => handleCategoryChange(e, 'sport')} value='sport'>
+								Sport
+							</Checkbox>
+							<Checkbox onChange={e => handleCategoryChange(e, 'politics')} value='politics'>
+								Politics
+							</Checkbox>
+							<Checkbox onChange={e => handleCategoryChange(e, 'literature')} value='literature'>
+								Literature
+							</Checkbox>
+							<Checkbox onChange={e => handleCategoryChange(e, 'science')} value='science'>
+								Science
+							</Checkbox>
+							<Checkbox
+								onChange={e => handleCategoryChange(e, 'animal-kingdom')}
+								value='animal-kingdom'
+							>
+								Animal Kingdom
+							</Checkbox>
+						</CheckboxGroup>
 					</Stack>
 					<Button
 						onClick={handleButtonClick}
